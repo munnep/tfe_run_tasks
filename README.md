@@ -1,12 +1,12 @@
-# tfe_run_tasks
+# Terraform Cloud Run Tasks
 
-This repository shows an example of run tasks with Terraform Cloud and Bridgecrew.
+This repository shows an example of run tasks with Terraform Cloud and Bridgecrew. This is to give you a quick idea of what run tasks can do. 
 
-
-
-# Diagram
-
-![](diagram/diagram-airgap.png)  
+This that will do:
+- Create a workspace
+- Configure a bridgecrew run task
+- See a plan with a mandatory run task
+- See the same plan with an advisory run task
 
 # Prerequisites
 
@@ -21,6 +21,10 @@ We will be using AWS. Make sure you have the following
 
 ## Install terraform  
 See the following documentation [How to install Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
+
+## Terraform Cloud
+
+Have a terraform Cloud account. 
 
 # How to
 
@@ -44,8 +48,8 @@ resource "tfe_workspace" "test" {
 
 - Go to [bridgecrew](https://www.bridgecrew.cloud/) to connect a run task
 
-[](https://www.bridgecrew.cloud/)  
-- On the left go to integrations 
+[](https://www.bridgecrew.cloud/)   
+- On the left go to integrations  
 ![](media/20221218152058.png)    
 - Go to CI/CD systems and integrate an account  
 ![](media/20221218152135.png)    
@@ -107,11 +111,29 @@ All tasks completed! 0 passed, 1 failed           (49s elapsed)
 │ Error: the run failed because the run task, bridgecrew, is required to succeed
 ```
 
-- The details of the bridgecrew error
+- The details of the bridgecrew error   
 
 ![](media/20221218153830.png)    
 
-
-
-
+- We accept the warnings and want to continue. You will want the Run Task to be Advisory
+- Go to Terraform cloud -> Workspace `test_run_tasks` -> settings -> runs tasks  
+![](media/20221219140959.png)  
+- Select the bridgecrew run task and select `configure`  
+![](media/20221219141040.png)    
+- Change to `advisory` and save  
+![](media/20221219141107.png)    
+- in a terminal go to the directory `workspace_code` 
+- Execute terraform plan
+```
+terraform plan
+```
+- You still get a message about the issues found but you are able to execute it 
+```
+│ bridgecrew ⸺   Failed (Advisory)
+│ 11 resources were scanned, 7 errors were found
+│ Details: https://www.bridgecrew.cloud/projects?repository=patrickmunne/test_run_tasks&branch=taskrs-b16wCtEVgqFDKwa1_master&runId=latest
+│ 
+│ 
+│ Overall Result: Passed with advisory failures
+```
 
